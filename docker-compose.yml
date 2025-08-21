@@ -1,8 +1,9 @@
-version: '3.8'
 services:
   cdn:
     build: .
+    container_name: cdn
     ports:
       - "911:911"
     volumes:
       - ./data:/app/data
+    restart: unless-stopped
