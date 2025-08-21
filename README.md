@@ -18,7 +18,7 @@ A lightweight CDN-like server built with Flask, allowing file uploads via drag-a
 - Python 3.12+ (for local testing without Docker)
 
 ## Folder Structure
-
+```
 cdn_project/
 ├─ server.py
 ├─ templates/
@@ -33,6 +33,7 @@ cdn_project/
 ├─ .gitignore
 ├─ README.md
 └─ LICENSE.md
+```
 
 ## Usage
 
