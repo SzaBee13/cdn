@@ -62,3 +62,27 @@ function uploadFile(file) {
         uploadStatus.textContent = 'Upload failed!';
     });
 }
+
+function deleteFile(filename) {
+    fetch('/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filename: filename }),
+        mode: 'cors'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Remove from list
+            const listItems = document.querySelectorAll('#file-list li');
+            listItems.forEach(li => {
+                if (li.innerText.includes(filename)) li.remove();
+            });
+        } else {
+            alert(data.error || 'Delete failed');
+        }
+    })
+    .catch(() => alert('Delete failed'));
+}

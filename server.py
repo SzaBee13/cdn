@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for
+from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
@@ -12,8 +12,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# CORS only for the upload route and your specific LAN IP
-CORS(app, resources={r"/upload": {"origins": "http://192.168.10.89"}})
+# CORS for upload and delete from your LAN IP
+CORS(app, resources={
+    r"/upload": {"origins": "http://192.168.10.89"},
+    r"/delete": {"origins": "http://192.168.10.89"}
+})
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -38,6 +41,23 @@ def upload_file():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return redirect(url_for('index'))
+
+@app.route('/delete', methods=['POST'])
+def delete_file():
+    data = request.get_json()
+    filename = data.get('filename')
+    if not filename:
+        return jsonify({"error": "No filename provided"}), 400
+
+    # Prevent directory traversal
+    filename = secure_filename(filename)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    if os.path.exists(path):
+        os.remove(path)
+        return jsonify({"success": True})
+    else:
+        return jsonify({"error": "File not found"}), 404
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=911)
