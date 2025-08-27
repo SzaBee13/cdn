@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, send_from_directory, redirect
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
+import mimetypes
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'data'
@@ -28,7 +29,18 @@ def index():
 
 @app.route('/<filename>')
 def serve_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    safe_name = secure_filename(filename)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], safe_name)
+
+    if not os.path.exists(path):
+        return "File not found", 404
+
+    mime_type, _ = mimetypes.guess_type(path)
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'],
+        safe_name,
+        mimetype=mime_type
+    )
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
