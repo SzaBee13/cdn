@@ -16,7 +16,8 @@ if not os.path.exists(UPLOAD_FOLDER):
 # CORS for upload and delete from your LAN IP
 CORS(app, resources={
     r"/upload": {"origins": "http://192.168.10.89"},
-    r"/delete": {"origins": "http://192.168.10.89"}
+    r"/delete": {"origins": "http://192.168.10.89"},
+    r"/*": {"origins": "*"}
 })
 
 def allowed_file(filename):
