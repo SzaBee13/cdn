@@ -36,7 +36,11 @@ function handleFiles(files) {
 function uploadFile(file) {
     const url = '/upload';
     const formData = new FormData();
-    formData.append('file', file);
+    // replace all char thats not alphanumeric, dot, hyphen or underscore
+    const safeFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const newFile = new File([file], safeFileName, { type: file.type });
+
+    formData.append('file', newFile);
 
     fetch(url, {
         method: 'POST',
