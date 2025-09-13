@@ -25,7 +25,7 @@
         <ul id="file-list" class="list-disc pl-5">
             {% for file in files %}
             <li class="flex justify-between items-center">
-                <a href="https://fileplayer.pages.dev?file={{ request.host_url.rstrip('/') }}{{ url_for('serve_file', filename=file) }}"
+                <a href="https://fileplayer.pages.dev?header=ngrok-skip-browser-warning::true&file={{ request.host_url.rstrip('/') }}{{ url_for('serve_file', filename=file) }}"
                     class="text-blue-500 hover:underline">
                     {{ file }}
                 </a>
