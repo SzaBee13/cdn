@@ -25,7 +25,7 @@
         <ul id="file-list" class="list-disc pl-5">
             {% for file in files %}
             <li class="flex justify-between items-center">
-                <a href="https://fileplayer.pages.dev?file={% if request.host.startswith('127.') 
+                <a href="https://fileplayer.pages.dev?header=bypass-tunnel-reminder::true&file={% if request.host.startswith('127.') 
                                                                                        or request.host.startswith('192.168.') 
                                                                                        or request.host.startswith('10.') 
                                                                                        or request.host == 'localhost' %}http://{{ request.host }}{{ url_for('serve_file', filename=file) }}{% else %}https://{{ request.host }}{{ url_for('serve_file', filename=file) }}{% endif %}"
