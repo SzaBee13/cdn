@@ -34,7 +34,7 @@ function handleFiles(files) {
 }
 
 function uploadFile(file) {
-    const url = '/upload';
+    const url = './upload';
     const formData = new FormData();
     // replace all char thats not alphanumeric, dot, hyphen or underscore
     const safeFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
