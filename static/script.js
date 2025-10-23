@@ -51,7 +51,7 @@ function uploadFile(file) {
         if (response.ok) {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = `/${newFile.name}`;
+            a.href = `./${newFile.name}`;
             a.textContent = newFile.name;
             a.classList.add('text-blue-500', 'hover:underline');
             li.appendChild(a);
