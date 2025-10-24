@@ -52,11 +52,7 @@ function uploadFile(file) {
             const li = document.createElement('li');
             const a = document.createElement('a');
             // check if it was funneled or not
-            if (window.location.pathname !== '/') {
-                a.href = `${window.location.pathname}/${newFile.name}`;
-            } else {
-                a.href = `./${newFile.name}`;
-            }
+            a.href = `https://olddell.wampus-enigmatic.ts.net/cdn/${newFile.name}`;
             a.textContent = newFile.name;
             a.classList.add('text-blue-500', 'hover:underline');
             li.appendChild(a);
