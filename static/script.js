@@ -51,7 +51,12 @@ function uploadFile(file) {
         if (response.ok) {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = `./${newFile.name}`;
+            // check if it was funneled or not
+            if (window.location.pathname !== '/') {
+                a.href = `${window.location.pathname}/${newFile.name}`;
+            } else {
+                a.href = `./${newFile.name}`;
+            }
             a.textContent = newFile.name;
             a.classList.add('text-blue-500', 'hover:underline');
             li.appendChild(a);
