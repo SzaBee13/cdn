@@ -78,5 +78,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **PocketBase API:** http://localhost:9111
 - **Flask Frontend:** http://localhost:911 (optional)
 - **Docker Image:** ghcr.io/yourusername/cdn:latest
-
-[v1.0.0]: https://github.com/yourusername/cdn/releases/tag/v1.0.0

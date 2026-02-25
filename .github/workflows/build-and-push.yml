@@ -29,6 +29,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert image name to lowercase
+        id: lowercase
+        run: |
+          IMAGE_NAME_LOWER=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]')
+          echo "image=$IMAGE_NAME_LOWER" >> $GITHUB_OUTPUT
+
       - name: Extract version tags
         id: version
         run: |
@@ -49,7 +55,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest
@@ -60,11 +66,11 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.with_v }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.full }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.major_minor }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.major }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}:${{ steps.version.outputs.with_v }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}:${{ steps.version.outputs.full }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}:${{ steps.version.outputs.major_minor }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}:${{ steps.version.outputs.major }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
