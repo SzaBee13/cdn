@@ -15,7 +15,7 @@ services:
       retries: 3
 
   cdn:
-    image: ghcr.io/szabee13/cdn:latest
+    image: ghcr.io/SzaBee13/cdn:latest
     container_name: cdn
     ports:
       - "911:911"
