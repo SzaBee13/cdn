@@ -6,36 +6,84 @@
     <title>Simple CDN</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pocketbase@0.20.0/dist/pocketbase.umd.js"></script>
 </head>
 
 <body class="bg-gray-100 p-10">
     <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
-        <h1 class="text-2xl font-bold mb-4">Simple CDN</h1>
-
-        <!-- Drag and Drop Area -->
-        <div id="drop-area"
-            class="border-4 border-dashed border-gray-300 p-6 text-center rounded cursor-pointer hover:border-blue-400">
-            <p class="text-gray-500">Drag & drop files here or click to upload</p>
-            <input type="file" id="fileElem" multiple class="hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold">Simple CDN</h1>
+            <div id="auth-status">
+                <div id="logged-out" class="space-x-2">
+                    <button id="show-login" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Login</button>
+                </div>
+                <div id="logged-in" class="hidden space-x-2 items-center">
+                    <span id="user-email" class="text-gray-700"></span>
+                    <button id="show-api-token" class="px-3 py-2 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">API Token</button>
+                    <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Logout</button>
+                </div>
+            </div>
         </div>
 
-        <div id="upload-status" class="mt-4 text-green-600"></div>
+        <!-- Login Form -->
+        <div id="login-form" class="hidden mb-6 p-4 border rounded bg-gray-50">
+            <h2 class="text-xl font-semibold mb-3">Login</h2>
+            <input type="email" id="login-email" placeholder="Email" class="w-full mb-2 px-3 py-2 border rounded">
+            <input type="password" id="login-password" placeholder="Password" class="w-full mb-3 px-3 py-2 border rounded">
+            <div class="space-x-2">
+                <button id="login-submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Login</button>
+                <button id="cancel-login" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+            </div>
+        </div>
+
+        <!-- API Token Display -->
+        <div id="api-token-section" class="hidden mb-6 p-4 border rounded bg-gray-50">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xl font-semibold">API Token</h2>
+                <button id="close-api-token" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+            </div>
+            <p class="text-sm text-gray-600 mb-3">Use this token to access your private files via API</p>
+            <div class="flex items-center space-x-2 mb-3">
+                <input type="text" id="api-token-display" readonly class="flex-1 px-3 py-2 border rounded bg-white text-sm font-mono" value="">
+                <button id="copy-token" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Copy</button>
+            </div>
+            <div class="text-sm text-gray-700 space-y-2">
+                <p class="font-semibold">Usage Examples:</p>
+                <div class="bg-white p-2 rounded border">
+                    <p class="text-xs text-gray-500">URL Parameter:</p>
+                    <code class="text-xs break-all">https://yourdomain.com/api/files/.../filename.jpg?token=YOUR_TOKEN</code>
+                </div>
+                <div class="bg-white p-2 rounded border">
+                    <p class="text-xs text-gray-500">Authorization Header:</p>
+                    <code class="text-xs">Authorization: YOUR_TOKEN</code>
+                </div>
+                <button id="copy-file-url" class="mt-2 px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 hidden">Copy File URL with Token</button>
+            </div>
+        </div>
+
+
+        <div id="upload-area" class="hidden">
+            <!-- Drag and Drop Area -->
+            <div id="drop-area"
+                class="border-4 border-dashed border-gray-300 p-6 text-center rounded cursor-pointer hover:border-blue-400">
+                <p class="text-gray-500">Drag & drop files here or click to upload</p>
+                <input type="file" id="fileElem" multiple class="hidden">
+            </div>
+
+            <div class="mt-4 flex items-center">
+                <input type="checkbox" id="public-toggle" class="mr-2">
+                <label for="public-toggle" class="text-gray-700">Make files public (accessible without login)</label>
+            </div>
+
+            <div id="upload-status" class="mt-4 text-green-600"></div>
+        </div>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">Files:</h2>
         <ul id="file-list" class="list-disc pl-5">
-            {% for file in files %}
-            <li class="flex justify-between items-center">
-                <a href="https://olddell.wampus-enigmatic.ts.net/cdn/{{ file }}" target="_blank"
-                    class="text-blue-500 hover:underline">
-                    {{ file }}
-                </a>
-                <button onclick="deleteFile('{{ file }}')" class="ml-2 text-red-500 hover:text-red-700">Delete</button>
-            </li>
-            {% endfor %}
         </ul>
     </div>
 
-    <script src="https://olddell.wampus-enigmatic.ts.net/cdn/static/script.js"></script>
+    <script src="./static/script.js"></script>
 </body>
 
 </html>
