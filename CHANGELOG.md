@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.0.1] - 2026-02-25
+### Fixed
+- **Github Actions Workflow** - Updated workflow to fix build errors due to dependency changes
+- **Dockerfile** - Added missing dependencies to fix runtime errors in the container
+
 ## [v2.0.0] - 2026-02-25
 
 ### Added
