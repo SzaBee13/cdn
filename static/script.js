@@ -1,6 +1,6 @@
-// Initialize PocketBase - Update this URL to your PocketBase instance
-// Use localhost for browser access (PocketBase runs on host network)
-const pb = new PocketBase('http://localhost:9111');
+// Initialize PocketBase - Uses reverse proxy at /_/
+// This automatically works with any domain you use to access the site
+const pb = new PocketBase(window.location.origin + '/_');
 
 // DOM Elements
 const dropArea = document.getElementById('drop-area');

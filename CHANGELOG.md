@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.0.3] - 2026-02-25
+
+### Fixed
+- **Client-Side API URL Handling** - Updated frontend to use relative URLs for API calls, ensuring compatibility with any domain setup
+
 ## [v2.0.2] - 2026-02-25
 
 ### Added
