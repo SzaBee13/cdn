@@ -234,7 +234,7 @@ function addFileToList(record) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.className = 'text-red-500 hover:text-red-700 text-sm';
-    deleteBtn.addEventListener('click', () => deleteFile(record.id));
+    deleteBtn.addEventListener('click', () => deleteFile(record, deleteBtn));
 
     // Add copy button for all users who can see the file
     buttonContainer.appendChild(copyUrlBtn);
@@ -249,7 +249,20 @@ function addFileToList(record) {
     fileList.appendChild(li);
 }
 
-async function deleteFile(recordId) {
+async function deleteFile(record, deleteBtn) {
+    const recordId = record.id;
+    const displayName = record.file || 'this file';
+
+    if (!confirm(`Delete ${displayName}? This action cannot be undone.`)) {
+        return;
+    }
+
+    const originalBtnText = deleteBtn?.textContent;
+    if (deleteBtn) {
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+    }
+
     try {
         await pb.collection('files').delete(recordId);
         
@@ -257,6 +270,27 @@ async function deleteFile(recordId) {
         const li = document.querySelector(`li[data-record-id="${recordId}"]`);
         if (li) li.remove();
     } catch (error) {
-        alert('Delete failed: ' + error.message);
+        // Token may be present but stale; refresh once then retry.
+        if (error?.status === 401 && pb.authStore.isValid) {
+            try {
+                await pb.collection('users').authRefresh();
+                await pb.collection('files').delete(recordId);
+                const li = document.querySelector(`li[data-record-id="${recordId}"]`);
+                if (li) li.remove();
+                return;
+            } catch (retryError) {
+                const retryMessage = retryError?.message || retryError?.data?.message || 'Unknown error';
+                alert('Delete failed after session refresh: ' + retryMessage);
+                return;
+            }
+        }
+
+        const message = error?.message || error?.data?.message || 'Unknown error';
+        alert('Delete failed: ' + message);
+    } finally {
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = originalBtnText || 'Delete';
+        }
     }
 }

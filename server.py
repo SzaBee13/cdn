@@ -32,6 +32,10 @@ def index():
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     return render_template('index.html', files=files)
 
+@app.route('/license')
+def license():
+    return render_template('license.html')
+
 @app.route('/<filename>')
 def serve_file(filename):
     safe_name = secure_filename(filename)
@@ -61,8 +65,9 @@ def upload_file():
 
 @app.route('/delete', methods=['POST'])
 def delete_file():
-    data = request.get_json()
-    filename = data.get('filename')
+    # Accept JSON, form-encoded, or query-string payloads.
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    filename = data.get('filename') or request.args.get('filename')
     if not filename:
         return jsonify({"error": "No filename provided"}), 400
 

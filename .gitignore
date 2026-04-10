@@ -7,3 +7,10 @@ data/
 pb_data/
 pb_public/
 pb_data_backup_*/
+
+# GitHub Wiki
+.wiki/
+wiki/
+
+# VS Code
+.vscode/
