@@ -1,5 +1,9 @@
 # Simple CDN with PocketBase Authentication
 
+[![GitHub License](https://img.shields.io/github/license/SzaBee13/cdn)](https://github.com/SzaBee13/cdn/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/SzaBee13/cdn)](https://github.com/SzaBee13/cdn/releases)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SzaBee13/cdn/total)](https://github.com/SzaBee13/cdn/pkgs/container/cdn)
+
 A lightweight CDN-like server with user authentication, allowing file uploads via drag-and-drop or click. Built with PocketBase for backend and authentication, with a clean TailwindCSS frontend.
 
 ## Features

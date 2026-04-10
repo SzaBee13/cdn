@@ -28,3 +28,22 @@
 ## Notes
 
 - Any rollout, migration, or compatibility notes
+
+## Downloads
+
+- [Source Code](https://github.com/SzaBee13/cdn/tree/vX.Y.Z)
+- [Docker Image](https://github.com/SzaBee13/cdn/pkgs/container/cdn)
+
+### Update
+
+- With compose:
+
+  ```bash
+  docker compose pull
+  ```
+
+- With docker:
+
+  ```bash
+  docker pull ghcr.io/szabee13/cdn:latest
+  ```
