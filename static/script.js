@@ -270,8 +270,8 @@ async function deleteFile(record, deleteBtn) {
         const li = document.querySelector(`li[data-record-id="${recordId}"]`);
         if (li) li.remove();
     } catch (error) {
-        // Token may be present but stale; refresh once then retry.
-        if (error?.status === 401 && pb.authStore.isValid) {
+        // PocketBase may mask auth failures as 404, so refresh once and retry.
+        if ([401, 403, 404].includes(error?.status) && pb.authStore.isValid) {
             try {
                 await pb.collection('users').authRefresh();
                 await pb.collection('files').delete(recordId);
